@@ -10,3 +10,12 @@ Equipment used:
 1 Maxbotix ultrasonic rangefinder LV-EZ1
 USB wifi adapter (for system time as well as future interfacing with app)
 
+Explanation of files:
+
+vlc.py - necessary inclusion for the vlc python module to be able to play sounds
+
+sensortest.py - A sample program for how the pi measures distances
+
+musictest.py - A sample program showing how the program plays sounds
+
+topnotch.wav - a low fidelity copy of a song to be used as an alarm tone
