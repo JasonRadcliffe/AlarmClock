@@ -52,7 +52,15 @@ def measure_avg():
  distance = distance1 + distance2 + distance3
 
  distance = distance / 3
-
+ 
+ deviation12 = distance2 - distance1
+ deviation23 = distance3 - distance2
+ 
+ if abs(deviation12) > 3:
+  return 800
+ if abs(deviation2) > 3:
+  return 800
+ 
  return distance
 
 
