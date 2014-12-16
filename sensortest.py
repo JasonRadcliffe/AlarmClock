@@ -40,27 +40,42 @@ def measure():
 
 
 def measure_avg():
- distance1=measure()
- time.sleep(0.1)
+ valid1 = False
+ valid2 = False
+ valid3 = False
 
- distance2=measure()
- time.sleep(0.1)
+ while True:
+  
+  if valid1 != True:
+   distance1=measure()
+   valid1 = True
+   time.sleep(0.1)
+  
+  if valid2 != True:
+   distance2=measure()
+   valid2 = True
+   time.sleep(0.1)
 
- distance3=measure()
- time.sleep(0.1)
+  if valid3 != True:
+   distance3=measure()
+   valid3 = True
+   time.sleep(0.1)
 
- distance = distance1 + distance2 + distance3
+  distance = distance1 + distance2 + distance3
 
- distance = distance / 3
- 
- deviation12 = distance2 - distance1
- deviation23 = distance3 - distance2
- 
- if abs(deviation12) > 3:
-  return 800
- if abs(deviation2) > 3:
-  return 800
- 
+  distance = distance / 3
+  
+  if abs(distance1 - distance2) > 3:
+   if abs(distance1 - distance3) > 3:
+    valid1 = False
+   else:
+    valid2 = False
+  
+  if abs(distance1 - distance3) > 3:
+   valid3 = False
+  
+  if (valid1 and valid2 and valid3):
+   break
  return distance
 
 
@@ -79,10 +94,7 @@ GPIO.output(trig, False)
 #try block to listen for user pressing CTRL-C
 try:
  while True:
-  while True:
-   distance = measure_avg()
-   if distance != 800:
-    break
+  distance = measure_avg()
   print "Distance: %.1f cm" % distance
   time.sleep(1)
 except KeyboardInterrupt:
