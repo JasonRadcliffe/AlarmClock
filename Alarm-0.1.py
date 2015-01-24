@@ -1,11 +1,11 @@
-#Alarm-0.1.py
-#Author: Jason Radcliffe  -  January 2015
-#Makes use of modified code from Matt Hawkins and Bob Tidey
+#sensortest.py
+#Author: Jason Radcliffe  -  October 2014
+#modified from code from Matt Hawkins and Bob Tidey
 
 import time
 import RPi.GPIO as GPIO
 
-#function that pulses the trigger and receives one measurement
+#function that pulses the trigger and receives a measurement
 def measure():
 
  #put high voltage on trigger line for .00001 seconds
@@ -79,26 +79,31 @@ def measure_avg():
  return distance
 
 
+#this function takes an Hour [1-12], a minute, and a boolean pm
+# value and returns a 9 value time tuple for the next time the
+# given input will occur.
+def nextWakeTime(wakeHour, wakeMin, isPM)
+ curTime = time.localtime(time.time())
+ 
+
 #-----------------------------------------------------------------------
 #main
 #--------------------------------------------------------------------------
 
 GPIO.setmode(GPIO.BCM)
 
-#trigger is GPIO23 aka pin 16
 trig = 23
-
-print "Welcome to Jason's Alarm Clock v0.1"
 
 GPIO.setup(trig, GPIO.OUT)
 GPIO.output(trig, False)
-
 
 #rudimentary method of obtaining wake time
 wakeHour= input('What hour do you want to get up?')
 wakeMinute = input('What minute do you want to get up?')
 wakeTuple=(2015,1,23,wakeHour, wakeMinute, 0,0,0,0) 
-print time.asctime(time.localtime(time.mktime(wakeTuple)))
+print time.asctime(wakeTuple)
+
+
 
 #try block to listen for user pressing CTRL-C
 try:
@@ -108,3 +113,33 @@ try:
   time.sleep(1)
 except KeyboardInterrupt:
  GPIO.cleanup()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
