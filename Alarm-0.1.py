@@ -107,9 +107,11 @@ def getWakeTuple(wakeHour, wakeMin, wakeIsPM):
   return wakeTuple
 
  if isToday == False:
-  secondsTillTomorrow = (3600 * (23 - curTime[3]) ) + (60 * (60 - curTime[4])) + 3
+  secondsTillTomorrow = (3600 * (23 - curTime[3]) ) + (60 * (60 - curTime[4]))
   tomorrowTuple = time.localtime(time.time() + secondsTillTomorrow)
-  return tomorrowTuple
+  secondsTillWake = (3600 * wakeHour) + (60 * wakeMinute)
+  wakeTuple = time.localtime(time.mktime(tomorrowTuple) + secondsTillWake)
+  return wakeTuple 
   
   
 
