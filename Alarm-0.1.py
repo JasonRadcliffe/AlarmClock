@@ -83,7 +83,6 @@ def measure_avg():
 # value and returns a 9 value time tuple for the next time the
 # given input will occur.
 def getWakeTuple(wakeHour, wakeMin, wakeIsPM):
- wakeIsPM = True
 
 #convert from regular to military time
  if wakeHour == 12:
@@ -105,10 +104,14 @@ def getWakeTuple(wakeHour, wakeMin, wakeIsPM):
  
  if isToday == True:
   wakeTuple = (curTime[0], curTime[1], curTime[2], wakeHour, wakeMinute, curTime[5], curTime[6], curTime[7], curTime[8])
+  return wakeTuple
 
-
- return wakeTuple
-
+ if isToday == False:
+  secondsTillTomorrow = (3600 * (23 - curTime[3]) ) + (60 * (60 - curTime[4])) + 3
+  tomorrowTuple = time.localtime(time.time() + secondsTillTomorrow)
+  return tomorrowTuple
+  
+  
 
 #-----------------------------------------------------------------------
 #main
@@ -121,19 +124,21 @@ trig = 23
 GPIO.setup(trig, GPIO.OUT)
 GPIO.output(trig, False)
 
-#rudimentary method of obtaining wake time
-wakeHour= input('What hour do you want to get up?')
-wakeMinute = input('What minute do you want to get up?')
-wakeTuple=(2015,1,23,wakeHour, wakeMinute, 0,0,0,0) 
-#print time.asctime(wakeTuple)
-#print time.asctime(time.localtime(time.time()))
-
-wakeTime = getWakeTime(wakeHour, wakeMinute, False)
-print time.asctime(wakeTime)
-
-
 #try block to listen for user pressing CTRL-C
 try:
+
+ #rudimentary method of obtaining wake time
+ wakeHour= input('What hour do you want to get up?')
+ wakeMinute = input('What minute do you want to get up?')
+ wakePM= input('PM? (True or False)')
+ #print time.asctime(wakeTuple)
+ #print time.asctime(time.localtime(time.time()))
+ 
+ wakeTuple = getWakeTuple(wakeHour, wakeMinute, wakePM)
+ print time.asctime(wakeTuple)
+
+
+
  while True:
   distance = measure_avg()
   print "Distance: %.1f cm" % distance
