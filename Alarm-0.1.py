@@ -137,8 +137,9 @@ try:
  #print time.asctime(time.localtime(time.time()))
  
  wakeTuple = getWakeTuple(wakeHour, wakeMinute, wakePM)
- print time.asctime(wakeTuple)
-
+ print "Alarm is set for:", time.asctime(wakeTuple)
+ secondsTillWake = time.mktime(wakeTuple) - time.time()
+ print secondsTillWake, " seconds until the alarm rings!"
 
 
  while True:
