@@ -82,9 +82,33 @@ def measure_avg():
 #this function takes an Hour [1-12], a minute, and a boolean pm
 # value and returns a 9 value time tuple for the next time the
 # given input will occur.
-def nextWakeTime(wakeHour, wakeMin, isPM)
+def getWakeTuple(wakeHour, wakeMin, wakeIsPM):
+ wakeIsPM = True
+
+#convert from regular to military time
+ if wakeHour == 12:
+  if wakeIsPM == False:   
+   wakeHour = 0
+ elif wakeIsPM == True:
+   wakeHour +=12
+
+#get current time and figure out if the alarm is for today or tomorrow
  curTime = time.localtime(time.time())
+
+ isToday = False
+ if wakeHour > curTime[3]:   
+  isToday = True
+ elif wakeHour == curTime[3] and wakeMinute > curTime[4]:
+  isToday = True
  
+
+ 
+ if isToday == True:
+  wakeTuple = (curTime[0], curTime[1], curTime[2], wakeHour, wakeMinute, curTime[5], curTime[6], curTime[7], curTime[8])
+
+
+ return wakeTuple
+
 
 #-----------------------------------------------------------------------
 #main
@@ -101,8 +125,11 @@ GPIO.output(trig, False)
 wakeHour= input('What hour do you want to get up?')
 wakeMinute = input('What minute do you want to get up?')
 wakeTuple=(2015,1,23,wakeHour, wakeMinute, 0,0,0,0) 
-print time.asctime(wakeTuple)
+#print time.asctime(wakeTuple)
+#print time.asctime(time.localtime(time.time()))
 
+wakeTime = getWakeTime(wakeHour, wakeMinute, False)
+print time.asctime(wakeTime)
 
 
 #try block to listen for user pressing CTRL-C
