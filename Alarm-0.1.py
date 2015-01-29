@@ -4,6 +4,8 @@
 
 import time
 import RPi.GPIO as GPIO
+import vlc
+import os
 
 #function that pulses the trigger and receives a measurement
 def measure():
@@ -119,6 +121,7 @@ def getWakeTuple(wakeHour, wakeMin, wakeIsPM):
 #main
 #--------------------------------------------------------------------------
 
+player = vlc.MediaPlayer("topnotch.wav")
 GPIO.setmode(GPIO.BCM)
 
 trig = 23
@@ -140,6 +143,9 @@ try:
  print "Alarm is set for:", time.asctime(wakeTuple)
  secondsTillWake = time.mktime(wakeTuple) - time.time()
  print secondsTillWake, " seconds until the alarm rings!"
+ time.sleep(secondsTillWake)
+ player.play()
+ print "Good morning!!"
 
 
  while True:
@@ -148,6 +154,7 @@ try:
   time.sleep(1)
 except KeyboardInterrupt:
  GPIO.cleanup()
+ os.remove('vlc.pyc')
 
 
 
