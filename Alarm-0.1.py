@@ -1,5 +1,5 @@
-#sensortest.py
-#Author: Jason Radcliffe  -  October 2014
+#Alarm-0.1.py
+#Author: Jason Radcliffe  -  January 2015
 #modified from code from Matt Hawkins and Bob Tidey
 
 import time
