@@ -145,13 +145,22 @@ try:
  print secondsTillWake, " seconds until the alarm rings!"
  time.sleep(secondsTillWake)
  player.play()
- print "Good morning!!"
+ bedEmptyStrikes = 0
 
-
- while True:
+#initial bed check method using magic number of 96 cm
+ while bedEmptyStrikes <= 3:
   distance = measure_avg()
-  print "Distance: %.1f cm" % distance
-  time.sleep(1)
+  if (distance >= 96.5):
+   print "Looks like you're up! Distance: %.1f cm" % distance
+   bedEmptyStrikes+=1
+
+  else:
+   print "Looks like you're still in bed. Distance: %.1f cm" % distance
+   if bedEmptyStrikes > 0:
+    bedEmptyStrikes -=1
+   time.sleep(1)
+ 
+ player.pause()
 except KeyboardInterrupt:
  GPIO.cleanup()
  os.remove('vlc.pyc')
