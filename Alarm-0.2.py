@@ -143,7 +143,19 @@ try:
  print "Alarm is set for:", time.asctime(wakeTuple)
  secondsTillWake = time.mktime(wakeTuple) - time.time()
  print secondsTillWake, " seconds until the alarm rings!"
+
+
+#periodically check and recalculate secondsTillWake
+ while secondsTillWake > 2700:
+  time.sleep(2000)
+  secondsTillWake = time.mktime(wakeTuple) - time.time()
+ while secondsTillWake > 300:
+  time.sleep(250)
+  secondsTillWake = time.mktime(wakeTuple) - time.time()
  time.sleep(secondsTillWake)
+
+
+
  player.play()
  bedEmptyStrikes = 0
 
