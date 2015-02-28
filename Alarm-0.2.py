@@ -7,6 +7,9 @@ import RPi.GPIO as GPIO
 import vlc
 import os
 
+MAX = 125
+MIN = 50
+
 #function that pulses the trigger and receives a measurement
 def measure():
 
@@ -42,43 +45,26 @@ def measure():
 
 
 def measure_avg():
- valid1 = False
- valid2 = False
- valid3 = False
+ distance1 = 0
+ distance2 = 0
+ distance3 = 0
+ while(distance1 > MAX or distance1 < MIN):
+  distance1=measure()
+  print "1: %.1f cm" % distance1
 
- while True:
-  
-  if valid1 != True:
-   distance1=measure()
-   valid1 = True
-   time.sleep(0.1)
-  
-  if valid2 != True:
-   distance2=measure()
-   valid2 = True
-   time.sleep(0.1)
+ while(distance2 > MAX or distance2 < MIN):
+  distance2=measure()
+  print "2: %.1f cm" % distance2
 
-  if valid3 != True:
-   distance3=measure()
-   valid3 = True
-   time.sleep(0.1)
+ while(distance3 > MAX or distance3 < MIN):
+  distance3=measure()
+  print "3: %.1f cm" % distance3
 
-  distance = distance1 + distance2 + distance3
-
-  distance = distance / 3
-  
-  if abs(distance1 - distance2) > 3:
-   if abs(distance1 - distance3) > 3:
-    valid1 = False
-   else:
-    valid2 = False
-  
-  if abs(distance1 - distance3) > 3:
-   valid3 = False
-  
-  if (valid1 and valid2 and valid3):
-   break
+ distance = (distance1 + distance2 + distance3) / 3
  return distance
+
+
+
 
 
 #this function takes an Hour [1-12], a minute, and a boolean pm
@@ -157,19 +143,19 @@ try:
 
 
  player.play()
- bedEmptyStrikes = 0
+ awakePoints = 0
 
 #initial bed check method using magic number of 96 cm
- while bedEmptyStrikes <= 3:
+ while awakePoints <= 3:
   distance = measure_avg()
   if (distance >= 96.5):
    print "Looks like you're up! Distance: %.1f cm" % distance
-   bedEmptyStrikes+=1
+   awakePoints+=1
 
   else:
    print "Looks like you're still in bed. Distance: %.1f cm" % distance
-   if bedEmptyStrikes > 0:
-    bedEmptyStrikes -=1
+   if awakePoints > 0:
+    awakePoints -=1
    time.sleep(1)
  
  player.pause()
